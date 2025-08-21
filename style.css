@@ -107,6 +107,14 @@ button::before {
 #btn-missoes::before { background-image: url('destination.png'); }
 #btn-concluir::before { background-image: url('factory.png'); }
 #btn-sair::before { background-image: url('exit.png'); }
+#btn-atualizar-missoes {
+    background-color: var(--secondary-color);
+    width: clamp(180px, 70%, 220px);
+}
+#btn-atualizar-missoes:hover {
+    background-color: #1976d2;
+}
+
 
 button:hover {
     background-color: #00796b;

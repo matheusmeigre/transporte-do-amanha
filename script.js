@@ -1,69 +1,6 @@
 // Dados do Jogo - Transcrição de data.py
-let missoesDisponiveis = [
-    {
-        id: 1,
-        destino: 'Montadora B',
-        produto: 'Parafusos',
-        quantidade: 50,
-        prazoDias: 3,
-        recompensa: 1500,
-        co2Economizado: 500
-    },
-    {
-        id: 2,
-        destino: 'Centro de Distribuicao C',
-        produto: 'Peças de motor',
-        quantidade: 80,
-        prazoDias: 5,
-        recompensa: 2200,
-        co2Economizado: 850
-    },
-    {
-        id: 3,
-        destino: 'Parceiro D',
-        produto: 'Componentes Eletrônicos',
-        quantidade: 120,
-        prazoDias: 7,
-        recompensa: 3500,
-        co2Economizado: 1200
-    },
-    {
-        id: 4,
-        destino: 'Fábrica E',
-        produto: 'Baterias de Lítio',
-        quantidade: 40,
-        prazoDias: 2, // Desafio de Prazo Curto
-        recompensa: 2800,
-        co2Economizado: 700
-    },
-    {
-        id: 5,
-        destino: 'Porto Marítimo F',
-        produto: 'Módulos de Cabine',
-        quantidade: 180, // Desafio de Grande Volume
-        prazoDias: 6,
-        recompensa: 5000,
-        co2Economizado: 2000
-    },
-    {
-        id: 6,
-        destino: 'Armazém G',
-        produto: 'Cabos e Fios',
-        quantidade: 65,
-        prazoDias: 4,
-        recompensa: 1900,
-        co2Economizado: 650
-    },
-    {
-        id: 7,
-        destino: 'Distrito Industrial H',
-        produto: 'Painéis Solares',
-        quantidade: 95,
-        prazoDias: 5,
-        recompensa: 3200,
-        co2Economizado: 1100
-    }
-];
+const destinos = ['Montadora B', 'Centro de Distribuicao C', 'Parceiro D', 'Fábrica E', 'Porto Marítimo F', 'Armazém G', 'Distrito Industrial H'];
+const produtos = ['Parafusos', 'Peças de motor', 'Componentes Eletrônicos', 'Baterias de Lítio', 'Módulos de Cabine', 'Cabos e Fios', 'Painéis Solares'];
 
 let caminhoes = [
     {
@@ -79,7 +16,7 @@ let caminhoes = [
         localizacaoAtual: 'Fabrica A'
     },
     {
-        id: 3, // Novo Caminhão
+        id: 3,
         capacidadeMaxima: 200,
         disponivel: true,
         localizacaoAtual: 'Fabrica A'
@@ -87,10 +24,35 @@ let caminhoes = [
 ];
 
 let pontuacao = 0;
+let co2Mitigado = 0;
 let missoesEmAndamento = [];
 let estadoDoJogo = 'menu-principal';
 let mensagemDoJogo = '';
 let missaoAAceitar = null;
+
+// Função para gerar uma nova lista de missões
+function gerarNovasMissoes() {
+    const novasMissoes = [];
+    for (let i = 0; i < 7; i++) {
+        const destinoAleatorio = destinos[Math.floor(Math.random() * destinos.length)];
+        const produtoAleatorio = produtos[Math.floor(Math.random() * produtos.length)];
+        const quantidadeAleatoria = Math.floor(Math.random() * 150) + 30; // 30 a 180 caixas
+        const recompensaAleatoria = Math.floor(Math.random() * 4000) + 1000; // R$1000 a R$5000
+        const co2Aleatorio = Math.floor(Math.random() * 1500) + 500; // 500 a 2000 kg
+
+        novasMissoes.push({
+            id: i + 1,
+            destino: destinoAleatorio,
+            produto: produtoAleatorio,
+            quantidade: quantidadeAleatoria,
+            recompensa: recompensaAleatoria,
+            co2Economizado: co2Aleatorio
+        });
+    }
+    return novasMissoes;
+}
+
+let missoesDisponiveis = gerarNovasMissoes();
 
 // Referências aos elementos HTML
 const uiOverlay = document.getElementById('ui-overlay');
@@ -123,7 +85,10 @@ function setEstado(novoEstado, ...args) {
 }
 
 function renderizarStatus() {
-    document.getElementById('pontuacao-info').innerText = `Pontuação: R$${pontuacao}`;
+    document.getElementById('pontuacao-info').innerHTML = `
+        <p><strong>Pontuação:</strong> R$${pontuacao}</p>
+        <p><strong>CO² Mitigado:</strong> ${co2Mitigado} kg</p>
+    `;
     const container = document.getElementById('caminhoes-status-container');
     container.innerHTML = '';
     
@@ -164,10 +129,10 @@ function renderizarMissoes() {
         
         item.innerHTML = `
             <div class="info">
-                <p><strong>Missão #${missao.id}:</strong></p>
                 <p><strong>Destino:</strong> ${missao.destino}</p>
-                <p><strong>Carga:</strong> ${missao.quantidade} caixas de ${missao.produto}</p>
+                <p><strong>Carga:</strong> ${missao.quantidade} caixas</p>
                 <p><strong>Recompensa:</strong> R$${missao.recompensa}</p>
+                <p><strong>CO² Evitado:</strong> ${missao.co2Economizado} kg</p>
             </div>
             <button class="btn-aceitar" data-id="${missao.id}">Aceitar</button>
         `;
@@ -226,6 +191,7 @@ function concluirMissoes() {
     
     missoesEmAndamento.forEach(m => {
         pontuacao += m.missao.recompensa;
+        co2Mitigado += m.missao.co2Economizado;
         m.caminhao.disponivel = true;
     });
     
@@ -247,8 +213,13 @@ document.getElementById('btn-status').addEventListener('click', () => setEstado(
 document.getElementById('btn-missoes').addEventListener('click', () => setEstado('tela-missoes'));
 document.getElementById('btn-concluir').addEventListener('click', concluirMissoes);
 document.getElementById('btn-sair').addEventListener('click', () => {
-    alert(`Obrigado por jogar! Sua pontuação final é: R$${pontuacao}`);
+    alert(`Obrigado por jogar! Sua pontuação final é: R$${pontuacao} e você mitigou ${co2Mitigado} kg de CO²!`);
     window.close();
+});
+document.getElementById('btn-atualizar-missoes').addEventListener('click', () => {
+    missoesDisponiveis = gerarNovasMissoes();
+    exibirMensagem('Missões atualizadas!', false);
+    renderizarMissoes();
 });
 
 document.getElementById('btn-voltar-status').addEventListener('click', () => setEstado('menu-principal'));
