@@ -1,13 +1,13 @@
 :root {
     --bg-color: #f0f0f0;
-    --primary-color: #009688; /* Verde-água da IVECO */
-    --secondary-color: #2196f3; /* Azul para detalhes */
-    --accent-color: #ff9800; /* Laranja de destaque */
+    --primary-color: #009688;
+    --secondary-color: #2196f3;
+    --accent-color: #ff9800;
     --text-color: #333;
     --white-text: #fff;
     --red-alert: #f44336;
-    --green-status: #4caf50; /* Verde para 'Disponível' */
-    --red-status: #f44336; /* Vermelho para 'Em missão' */
+    --green-status: #4caf50;
+    --red-status: #f44336;
 }
 
 body, html {
@@ -61,7 +61,7 @@ body, html {
     font-size: clamp(1.5em, 5vw, 2.5em);
     color: var(--primary-color);
     margin-bottom: 10px;
-    font-weight: bold; /* Títulos mais fortes */
+    font-weight: bold;
     letter-spacing: 1px;
 }
 
@@ -74,7 +74,7 @@ body, html {
 
 button {
     font-size: clamp(0.9em, 2vw, 1.1em);
-    padding: 12px 25px; /* Padding ajustado para maior respiro */
+    padding: 12px 25px;
     margin: 8px 0;
     border: none;
     border-radius: 5px;
@@ -103,10 +103,10 @@ button::before {
     background-repeat: no-repeat;
 }
 
-#btn-status::before { background-image: url('assets/truck.png'); }
-#btn-missoes::before { background-image: url('assets/destination.png'); }
-#btn-concluir::before { background-image: url('assets/factory.png'); }
-#btn-sair::before { background-image: url('assets/exit.png'); }
+#btn-status::before { background-image: url('truck.png'); }
+#btn-missoes::before { background-image: url('destination.png'); }
+#btn-concluir::before { background-image: url('factory.png'); }
+#btn-sair::before { background-image: url('exit.png'); }
 
 button:hover {
     background-color: #00796b;
@@ -141,7 +141,6 @@ button:hover {
     overflow-y: auto;
 }
 
-/* Estilo para o texto de status */
 .status-disponivel {
     color: var(--green-status);
     font-weight: bold;
@@ -174,9 +173,9 @@ button:hover {
     margin-right: 15px;
 }
 
-.mission-item::before { background-image: url('assets/mycelium-box.png'); }
-.caminhao-item.disponivel::before { background-image: url('assets/truck.png'); }
-.caminhao-item.em-missao::before { background-image: url('assets/truck-in-mission.png'); }
+.mission-item::before { background-image: url('mycelium-box.png'); }
+.caminhao-item.disponivel::before { background-image: url('truck.png'); }
+.caminhao-item.em-missao::before { background-image: url('truck-in-mission.png'); }
 
 .mission-item .info, .caminhao-item .info {
     flex-grow: 1;
