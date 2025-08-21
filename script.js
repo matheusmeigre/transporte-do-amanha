@@ -20,6 +20,18 @@ let caminhoes = [
         capacidadeMaxima: 200,
         disponivel: true,
         localizacaoAtual: 'Fabrica A'
+    },
+    {
+        id: 4,
+        capacidadeMaxima: 120,
+        disponivel: true,
+        localizacaoAtual: 'Fabrica A'
+    },
+    {
+        id: 5,
+        capacidadeMaxima: 180,
+        disponivel: true,
+        localizacaoAtual: 'Fabrica A'
     }
 ];
 
