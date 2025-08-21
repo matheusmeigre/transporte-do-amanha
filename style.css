@@ -1,0 +1,209 @@
+:root {
+    --bg-color: #f0f0f0;
+    --primary-color: #009688; /* Verde-água da IVECO */
+    --secondary-color: #2196f3; /* Azul para detalhes */
+    --accent-color: #ff9800; /* Laranja de destaque */
+    --text-color: #333;
+    --white-text: #fff;
+    --red-alert: #f44336;
+    --green-status: #4caf50; /* Verde para 'Disponível' */
+    --red-status: #f44336; /* Vermelho para 'Em missão' */
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#game-container {
+    position: relative;
+    width: 90vw;
+    max-width: 900px;
+    height: 70vh;
+    max-height: 700px;
+    aspect-ratio: 900 / 700;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border: 5px solid var(--primary-color);
+    background-color: var(--white-text);
+}
+
+#ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-screen {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+.title {
+    font-size: clamp(1.5em, 5vw, 2.5em);
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-weight: bold; /* Títulos mais fortes */
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    font-size: clamp(0.8em, 2vw, 1.2em);
+    color: var(--text-color);
+    margin-bottom: 25px;
+    max-width: 90%;
+}
+
+button {
+    font-size: clamp(0.9em, 2vw, 1.1em);
+    padding: 12px 25px; /* Padding ajustado para maior respiro */
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: var(--white-text);
+    transition: background-color 0.3s, transform 0.1s;
+    width: clamp(200px, 80%, 250px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: normal;
+}
+
+button span {
+    margin-left: 8px;
+    white-space: normal;
+    text-align: center;
+}
+
+button::before {
+    content: '';
+    width: clamp(15px, 4vw, 20px);
+    height: clamp(15px, 4vw, 20px);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#btn-status::before { background-image: url('assets/truck.png'); }
+#btn-missoes::before { background-image: url('assets/destination.png'); }
+#btn-concluir::before { background-image: url('assets/factory.png'); }
+#btn-sair::before { background-image: url('assets/exit.png'); }
+
+button:hover {
+    background-color: #00796b;
+    transform: translateY(-2px);
+}
+
+#btn-sair {
+    background-color: var(--red-alert);
+}
+
+#btn-sair:hover {
+    background-color: #d32f2f;
+}
+
+.status-info {
+    font-size: clamp(0.9em, 2vw, 1.2em);
+    color: var(--text-color);
+    margin: 10px 0;
+    padding: 8px 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    width: 100%;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.status-list, .missions-list {
+    width: 100%;
+    margin-top: 15px;
+    padding-right: 15px;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+/* Estilo para o texto de status */
+.status-disponivel {
+    color: var(--green-status);
+    font-weight: bold;
+}
+
+.status-em-missao {
+    color: var(--red-status);
+    font-weight: bold;
+}
+
+.mission-item, .caminhao-item {
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-left: 5px solid var(--secondary-color);
+    margin-bottom: 15px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.mission-item::before, .caminhao-item::before {
+    content: "";
+    display: block;
+    width: clamp(30px, 8vw, 40px);
+    height: clamp(30px, 8vw, 40px);
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 15px;
+}
+
+.mission-item::before { background-image: url('assets/mycelium-box.png'); }
+.caminhao-item.disponivel::before { background-image: url('assets/truck.png'); }
+.caminhao-item.em-missao::before { background-image: url('assets/truck-in-mission.png'); }
+
+.mission-item .info, .caminhao-item .info {
+    flex-grow: 1;
+    font-size: clamp(0.8em, 2vw, 1em);
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+
+.mission-item p {
+    margin: 3px 0;
+}
+
+.mission-item button {
+    flex-shrink: 0;
+    width: clamp(100px, 40%, 150px);
+    padding: 8px 10px;
+    font-size: clamp(0.7em, 2vw, 0.9em);
+    margin: 5px 0 5px auto;
+}
+
+.message {
+    margin-top: 20px;
+    font-size: clamp(1em, 2.5vw, 1.2em);
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.message.error {
+    color: var(--red-alert);
+}

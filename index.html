@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Logística da IVECO</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main id="game-container">
+        <div id="ui-overlay">
+            
+            <div id="menu-principal" class="game-screen">
+                <h1 class="title">Simulador de Logística da IVECO</h1>
+                <p class="subtitle">Gerencie sua frota para entregar mercadorias e reduzir o CO2.</p>
+                <button id="btn-status"><span>Ver Status</span></button>
+                <button id="btn-missoes"><span>Ver e Aceitar Missões</span></button>
+                <button id="btn-concluir"><span>Concluir Missões</span></button>
+                <button id="btn-sair"><span>Sair do Jogo</span></button>
+                <p id="game-message" class="message"></p>
+            </div>
+
+            <div id="tela-status" class="game-screen" style="display:none;">
+                <h2 class="title">Status do Jogo</h2>
+                <p class="status-info" id="pontuacao-info"></p>
+                <div id="caminhoes-status-container" class="status-list"></div>
+                <button id="btn-voltar-status"><span>Voltar</span></button>
+            </div>
+
+            <div id="tela-missoes" class="game-screen" style="display:none;">
+                <h2 class="title">Missões Disponíveis</h2>
+                <div id="missoes-list-container" class="missions-list"></div>
+                <button id="btn-voltar-missoes"><span>Voltar</span></button>
+            </div>
+
+            <div id="tela-caminhao" class="game-screen" style="display:none;">
+                <h2 class="title">Escolher Caminhão</h2>
+                <p class="status-info" id="caminhao-missao-info"></p>
+                <div id="caminhoes-select-container" class="status-list"></div>
+                <button id="btn-voltar-caminhao"><span>Voltar</span></button>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
