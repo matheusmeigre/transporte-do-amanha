@@ -8,6 +8,8 @@
     --red-alert: #f44336;
     --green-status: #4caf50;
     --red-status: #f44336;
+    --progress-bar-bg: #e0e0e0;
+    --progress-bar-fill: #4caf50;
 }
 
 body, html {
@@ -213,4 +215,20 @@ button:hover {
 
 .message.error {
     color: var(--red-alert);
+}
+
+/* Novos estilos para a barra de progresso */
+.progress-bar-container {
+    width: 100%;
+    background-color: var(--progress-bar-bg);
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.progress-bar-fill {
+    height: 15px;
+    background-color: var(--progress-bar-fill);
+    width: 0%;
+    border-radius: 5px;
+    transition: width 0.5s ease-in-out;
 }

@@ -1,4 +1,4 @@
-// Dados do Jogo - Transcrição de data.py
+// Dados do Jogo
 const destinos = ['Montadora B', 'Centro de Distribuicao C', 'Parceiro D', 'Fábrica E', 'Porto Marítimo F', 'Armazém G', 'Distrito Industrial H'];
 const produtos = ['Parafusos', 'Peças de motor', 'Componentes Eletrônicos', 'Baterias de Lítio', 'Módulos de Cabine', 'Cabos e Fios', 'Painéis Solares'];
 
@@ -60,7 +60,8 @@ const telas = {
     'menu-principal': document.getElementById('menu-principal'),
     'tela-status': document.getElementById('tela-status'),
     'tela-missoes': document.getElementById('tela-missoes'),
-    'tela-caminhao': document.getElementById('tela-caminhao')
+    'tela-caminhao': document.getElementById('tela-caminhao'),
+    'tela-rastreabilidade': document.getElementById('tela-rastreabilidade')
 };
 
 const mensagemElemento = document.getElementById('game-message');
@@ -81,6 +82,8 @@ function setEstado(novoEstado, ...args) {
     } else if (novoEstado === 'tela-caminhao') {
         missaoAAceitar = missoesDisponiveis.find(m => m.id === args[0]);
         renderizarEscolherCaminhao();
+    } else if (novoEstado === 'tela-rastreabilidade') {
+        simularRastreabilidade();
     }
 }
 
@@ -183,9 +186,58 @@ function aceitarMissao(missao, caminhao) {
     setEstado('menu-principal');
 }
 
-function concluirMissoes() {
+function simularRastreabilidade() {
+    const container = document.getElementById('rastreabilidade-container');
+    const finalizarBtn = document.getElementById('btn-finalizar-rastreamento');
+    finalizarBtn.style.display = 'none';
+
     if (missoesEmAndamento.length === 0) {
-        exibirMensagem('Nenhuma missão em andamento.', true);
+        container.innerHTML = '<p class="message error">Nenhuma missão em andamento para rastrear.</p>';
+        finalizarBtn.style.display = 'block';
+        return;
+    }
+
+    container.innerHTML = '';
+    
+    missoesEmAndamento.forEach(m => {
+        const item = document.createElement('div');
+        item.className = 'mission-item em-missao';
+        item.innerHTML = `
+            <div class="info">
+                <p><strong>Caminhão ${m.caminhao.id}:</strong> ${m.missao.destino}</p>
+                <p>Status: <span id="status-caminhao-${m.caminhao.id}">Em rota</span></p>
+                <div class="progress-bar-container">
+                    <div id="progress-${m.caminhao.id}" class="progress-bar-fill"></div>
+                </div>
+            </div>
+        `;
+        container.appendChild(item);
+
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += 10;
+            const progressBar = document.getElementById(`progress-${m.caminhao.id}`);
+            if (progressBar) {
+                progressBar.style.width = `${progress}%`;
+            }
+
+            if (progress >= 100) {
+                clearInterval(progressInterval);
+                const statusSpan = document.getElementById(`status-caminhao-${m.caminhao.id}`);
+                if (statusSpan) {
+                    statusSpan.innerText = 'Concluído';
+                }
+            }
+        }, 300);
+    });
+
+    setTimeout(() => {
+        finalizarBtn.style.display = 'block';
+    }, missoesEmAndamento.length * 300 + 1500);
+}
+
+function concluirMissaoRealmente() {
+    if (missoesEmAndamento.length === 0) {
         return;
     }
     
@@ -197,7 +249,7 @@ function concluirMissoes() {
     
     missoesEmAndamento = [];
     exibirMensagem('Todas as missões em andamento foram concluídas!', false);
-    setEstado('menu-principal');
+    setEstado('tela-status');
 }
 
 function exibirMensagem(texto, isError) {
@@ -211,7 +263,7 @@ function exibirMensagem(texto, isError) {
 // --- Event Listeners para os botões ---
 document.getElementById('btn-status').addEventListener('click', () => setEstado('tela-status'));
 document.getElementById('btn-missoes').addEventListener('click', () => setEstado('tela-missoes'));
-document.getElementById('btn-concluir').addEventListener('click', concluirMissoes);
+document.getElementById('btn-concluir').addEventListener('click', () => setEstado('tela-rastreabilidade'));
 document.getElementById('btn-sair').addEventListener('click', () => {
     alert(`Obrigado por jogar! Sua pontuação final é: R$${pontuacao} e você mitigou ${co2Mitigado} kg de CO²!`);
     window.close();
@@ -221,6 +273,7 @@ document.getElementById('btn-atualizar-missoes').addEventListener('click', () =>
     exibirMensagem('Missões atualizadas!', false);
     renderizarMissoes();
 });
+document.getElementById('btn-finalizar-rastreamento').addEventListener('click', concluirMissaoRealmente);
 
 document.getElementById('btn-voltar-status').addEventListener('click', () => setEstado('menu-principal'));
 document.getElementById('btn-voltar-missoes').addEventListener('click', () => setEstado('menu-principal'));
